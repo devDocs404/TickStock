@@ -8,8 +8,11 @@ import {
 import { MetricCard } from "./Components/MetricCard";
 import { PortfolioGraph } from "./Components/PortfolioGraph";
 import { OverviewSection } from "./Components/OverviewCard";
+import { AuthStore } from "../../Store/AuthStore";
 
 const Dashboard = ({ isDark }: { isDark: boolean }) => {
+  const { token } = AuthStore();
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 p-[20px] ">
@@ -19,6 +22,7 @@ const Dashboard = ({ isDark }: { isDark: boolean }) => {
             <>
               <span style={{ display: "flex" }}>
                 <IndianRupee />
+                {token}
                 <span>1.2M</span>
               </span>
             </>

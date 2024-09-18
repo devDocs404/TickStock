@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Sidebar } from "../components/Sidebar";
 import { SearchBar } from "./Dashboard/Components/SearchBar";
 import { motion } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
 import { BarChart2, Wallet, User, LayoutDashboard } from "lucide-react";
+import { Sidebar } from "../components/SideBar";
 
 const Template = ({
   setIsDark,
@@ -26,6 +26,7 @@ const Template = ({
     ],
     []
   );
+
   useEffect(() => {
     const pathParts = location.pathname.split("/");
     const firstPart = pathParts[1];
@@ -108,7 +109,6 @@ const Template = ({
             isDark ? "bg-gray-800" : "bg-[#FBFBFB]"
           }`}
         >
-          {/* <Dashboard isDark={isDark} /> */}
           <Outlet />
         </div>
       </div>

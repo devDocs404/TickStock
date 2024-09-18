@@ -3,6 +3,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Template from "../pages/Template";
 import WorkInProgress from "./WorkInProgress";
+import AuthenticationPage from "../pages/Auth/AuthenticationPage";
 
 const createRoutes = (isDark: boolean, setIsDark: (value: boolean) => void) => {
   return createBrowserRouter([
@@ -55,6 +56,10 @@ const createRoutes = (isDark: boolean, setIsDark: (value: boolean) => void) => {
     {
       path: "*",
       element: <WorkInProgress />,
+    },
+    {
+      path: "/login",
+      element: <AuthenticationPage />,
     },
   ]);
 };
