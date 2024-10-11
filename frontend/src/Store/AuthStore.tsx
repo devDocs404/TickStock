@@ -5,7 +5,8 @@ import { persist, devtools, createJSONStorage } from "zustand/middleware";
 // Define a simplified interface for the store state
 interface StoreState {
   user: unknown[];
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 
   // Setters for each field
   setField: <T extends keyof StoreState>(key: T, value: StoreState[T]) => void;
@@ -13,10 +14,11 @@ interface StoreState {
 
 const initialState: Omit<StoreState, "setField"> = {
   user: [],
-  token: "",
+  accessToken: "",
+  refreshToken: "",
 };
 
-const AuthStore = create<StoreState>()(
+const useAuthStore = create<StoreState>()(
   devtools(
     persist(
       (set) => ({
@@ -36,4 +38,4 @@ const AuthStore = create<StoreState>()(
   )
 );
 
-export { AuthStore };
+export { useAuthStore };

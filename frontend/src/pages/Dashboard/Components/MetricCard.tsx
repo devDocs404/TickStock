@@ -15,9 +15,8 @@ const MetricCard = ({
 }) => (
   <motion.div
     className={`p-4  rounded-lg shadow-sm ${
-      isDark ? "bg-gray-800" : "bg-[#F4F5FB]"
+      isDark ? "bg-[#212121]" : "bg-[#F4F5FB]"
     }
-     bg-indigo-100 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-30 border border-gray-100h-[calc(100vh-122px)] shadow  mx-[20px] rounded-lg
     `}
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}

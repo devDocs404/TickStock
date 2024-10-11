@@ -1,12 +1,16 @@
 import { AnimatedText } from "./AnimatedText";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 
 const schema2 = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   firstName: z.string().min(1, { message: "Enter correct First Name." }),
   lastName: z.string().min(1, { message: "Enter correct Last Name." }),
+  phoneNumber: z
+    .string()
+    .min(10, { message: "Enter correct Phone Number." })
+    .max(10, { message: "Enter correct Phone Number." }),
 });
 
 // Password validation rules for real-time UI feedback
@@ -31,6 +35,7 @@ const SignupForm = ({ onToggle }: { onToggle: () => void }) => {
     confirmPassword: "",
     firstName: "",
     lastName: "",
+    phoneNumber: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [passwordValidations, setPasswordValidations] = useState<
@@ -62,11 +67,14 @@ const SignupForm = ({ onToggle }: { onToggle: () => void }) => {
     validateForm(data.password, data.confirmPassword);
   };
 
-  const validateForm = (password: string, confirmPassword: string) => {
-    const allRulesSatisfied = passwordValidations.every((rule) => rule.valid);
-    const passwordsMatch = password === confirmPassword;
-    setIsFormValid(allRulesSatisfied && passwordsMatch);
-  };
+  const validateForm = useCallback(
+    (password: string, confirmPassword: string) => {
+      const allRulesSatisfied = passwordValidations.every((rule) => rule.valid);
+      const passwordsMatch = password === confirmPassword;
+      setIsFormValid(allRulesSatisfied && passwordsMatch);
+    },
+    [passwordValidations]
+  );
 
   // Form submission handler
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -75,6 +83,7 @@ const SignupForm = ({ onToggle }: { onToggle: () => void }) => {
       schema2.parse(data);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { confirmPassword, ...finalPayload } = data;
+      console.log(finalPayload, "kjalsfkjasljdlf");
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.errors.reduce(
@@ -92,7 +101,7 @@ const SignupForm = ({ onToggle }: { onToggle: () => void }) => {
   // Effect to update password validation when password or confirmPassword changes
   useEffect(() => {
     validateForm(data.password, data.confirmPassword);
-  }, [data.password, data.confirmPassword]);
+  }, [data.password, data.confirmPassword, validateForm]);
 
   return (
     <motion.div
@@ -137,6 +146,19 @@ const SignupForm = ({ onToggle }: { onToggle: () => void }) => {
               )}
             </div>
           </div>
+        </AnimatedText>
+        <AnimatedText delay={0.2}>
+          <input
+            type="number"
+            name="phoneNumber"
+            value={data.phoneNumber}
+            onChange={handleChange}
+            placeholder="Phone Number"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-sm pt-1">{errors.phoneNumber}</p>
+          )}
         </AnimatedText>
 
         <AnimatedText delay={0.2}>

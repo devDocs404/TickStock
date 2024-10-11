@@ -8,10 +8,21 @@ import {
 import { MetricCard } from "./Components/MetricCard";
 import { PortfolioGraph } from "./Components/PortfolioGraph";
 import { OverviewSection } from "./Components/OverviewCard";
-import { AuthStore } from "../../Store/AuthStore";
+import { useFetchPropertyTransactions } from "../../Queries/TestHook";
+import { useEffect } from "react";
 
 const Dashboard = ({ isDark }: { isDark: boolean }) => {
-  const { token } = AuthStore();
+  const { data, error, isLoading } = useFetchPropertyTransactions({
+    endpoint: "auth/users",
+    type: "get",
+    queryKey: "loginTest",
+  });
+
+  useEffect(() => {
+    console.log(data, "dataljalfdlasj");
+    console.log(error, "error");
+    console.log(isLoading, "isLoading");
+  }, [data, error, isLoading]);
 
   return (
     <>
@@ -22,7 +33,6 @@ const Dashboard = ({ isDark }: { isDark: boolean }) => {
             <>
               <span style={{ display: "flex" }}>
                 <IndianRupee />
-                {token}
                 <span>1.2M</span>
               </span>
             </>
@@ -31,6 +41,7 @@ const Dashboard = ({ isDark }: { isDark: boolean }) => {
           icon={PieChartIcon}
           isDark={isDark}
         />
+
         <MetricCard
           title="Total Invested"
           value="+5%"
@@ -74,11 +85,11 @@ const Dashboard = ({ isDark }: { isDark: boolean }) => {
 
       <div className="flex justify-between h-[400px] p-4">
         <div
-          className={`p-6 w-[65%] h-full
-
-    `}
+          className={`p-6 w-[65%] h-full rounded-lg ${
+            isDark ? "bg-[#212121]" : "bg-[#F4F5FB]"
+          }`}
         >
-          <h1 className="text-2xl font-medium">Portfolio Graph</h1>
+          <h1 className="text-4xl font-medium">Portfolio Graph</h1>
           <div className="h-full py-5">
             <PortfolioGraph isDark={isDark} />
           </div>

@@ -1,5 +1,7 @@
-import { ReactNode } from "react";
-// import { useStore } from "../Store/Store";
+import { useAuthStore } from "@/Store/AuthStore";
+import { ReactNode, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface ProtectedRoutesProps {
   children: ReactNode;
@@ -8,62 +10,37 @@ interface ProtectedRoutesProps {
 const ProtectedRoutes = ({
   children,
 }: ProtectedRoutesProps): JSX.Element | null => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { accessToken } = useAuthStore();
+  useEffect(() => {
+    if (accessToken === "" || !accessToken) {
+      navigate("/login", { replace: true });
+      toast.warning("Session expired.");
+    }
+  }, [accessToken, navigate, children]);
 
-  // const { token } = useStore((state) => ({
-  //   token: state.token,
-  // }));
+  if (accessToken === "") {
+    return null;
+  }
 
-  // useEffect(() => {
-  //   if (token === "") {
-  //     navigate("/login", { replace: true });
-  //   }
-  // }, [token, navigate]);
-
-  // if (token === "") {
-  //   return null; // If no token, return nothing
-  // }
-
-  return <>{children}</>; // Render children if token exists
+  return <>{children}</>;
 };
 
 export default ProtectedRoutes;
 
-// import { useEffect, ReactNode } from "react";
+// import { useAuthStore } from "@/Store/AuthStore";
+// import { ReactNode, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
-// import { useStore } from "../Store/Store";
+// import { toast } from "sonner";
 
 // interface ProtectedRoutesProps {
 //   children: ReactNode;
 // }
 
-// // Define the type for your store's state
-// interface StoreState {
-//   token: string;
-//   // Add other properties if necessary
-// }
-
 // const ProtectedRoutes = ({
 //   children,
 // }: ProtectedRoutesProps): JSX.Element | null => {
-//   const navigate = useNavigate();
-
-//   // Provide an explicit type for the 'state' parameter
-//   const { token } = useStore((state: StoreState) => ({
-//     token: state.token,
-//   }));
-
-//   useEffect(() => {
-//     if (token === "") {
-//       navigate("/login", { replace: true });
-//     }
-//   }, [token, navigate]);
-
-//   if (token === "") {
-//     return null; // If no token, return nothing
-//   }
-
-//   return <>{children}</>; // Render children if token exists
+//   return <>{children}</>;
 // };
 
 // export default ProtectedRoutes;
